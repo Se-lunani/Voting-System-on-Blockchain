@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Voting System</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <h1>Blockchain Voting System</h1>
+    <div id="voting-form">
+        <h2>Vote for Your Candidate</h2>
+        <form id="voteForm">
+            <label for="candidate">Candidate Name:</label>
+            <input type="text" id="candidate" name="candidate" required>
+            <button type="submit">Submit Vote</button>
+        </form>
+    </div>
+    <div id="results-form">
+        <h2>Check Voting Results</h2>
+        <form id="resultsForm">
+            <label for="results-candidate">Candidate Name:</label>
+            <input type="text" id="results-candidate" name="results-candidate" required>
+            <button type="submit">Get Results</button>
+        </form>
+        <p id="results"></p>
+    </div>
+
+    <script>
+        const voteForm = document.getElementById('voteForm');
+        const resultsForm = document.getElementById('resultsForm');
+        const resultsDisplay = document.getElementById('results');
+
+        voteForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const candidate = document.getElementById('candidate').value;
+            const response = await fetch('/vote', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({candidate})
+            });
+            const data = await response.json();
+            alert(data.message);
+        };
+
+        resultsForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const candidate = document.getElementById('results-candidate').value;
+            const response = await fetch(`/results?candidate=${candidate}`);
+            const data = await response.json();
+            resultsDisplay.innerText = `Votes for ${candidate}: ${data.votes}`;
+        };
+    </script>
+</body>
+</html>
+

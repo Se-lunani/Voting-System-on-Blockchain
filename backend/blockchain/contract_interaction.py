@@ -5,7 +5,7 @@ ganache_url = "http://127.0.0.1:7545"
 web3 = Web3(Web3.HTTPProvider(ganache_url))
 
 # Check connection
-if not web3.isConnected():
+if not web3.is_connected():
     raise Exception("Cannot connect to Ganache")
 
 # Set default account (first account in Ganache)
